@@ -13,7 +13,7 @@ public class Dog extends Animal {
         if (obstacleLength <= 500) {
             System.out.println(this.name + " run " + obstacleLength + " m");
         } else {
-            System.out.println(name + " can run up to 500 meters");
+            System.out.println(this.name + " can run up to 500 meters");
         }
     }
     @Override
@@ -21,7 +21,7 @@ public class Dog extends Animal {
         if (obstacleLength <= 10) {
             System.out.println(this.name + " swim " + obstacleLength + " m");
         } else {
-            System.out.println("Dog can swim up to 10 meters");
+            System.out.println(this.name + " can swim up to 10 meters");
         }
     }
 }
