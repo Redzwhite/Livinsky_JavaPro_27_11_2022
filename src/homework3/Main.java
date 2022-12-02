@@ -1,5 +1,7 @@
 package homework3;
 
+import static homework3.Animal.getTotalCount;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -15,6 +17,6 @@ public class Main {
 
         System.out.println("Number of dogs created:" + Dog.count);
         System.out.println("Number of cats created:" + Cat.count);
-        System.out.println("Number of animals created:" + (Dog.count + Cat.count));
+        System.out.println("Number of animals created:" + getTotalCount());
     }
 }
