@@ -83,8 +83,8 @@ public class HomeWorkApp {
     }
 
     private static void stringAndNumber(String string, int number) {
-        var s = string.repeat(number);
-        System.out.println(s);
+        string.repeat(number);
+        System.out.println(string.repeat(number));
     }
 
     public static void leapYearOrNot(int year) {
