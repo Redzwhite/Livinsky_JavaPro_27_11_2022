@@ -4,50 +4,35 @@ import java.util.Arrays;
 
 public class ValueCalculator {
 
-    static int[] str = new int[10];
-    static int size = str.length;
+    static float[] baseArray = new float[1000000];
+    static int size = baseArray.length;
     static int halfSize = (size + 1) / 2;
 
-
     public static void main(String[] args) {
+        methodToValueCalc();
 
-        MyThread thread = new MyThread();
-        thread.start();
-
-        MyThread thread2 = new MyThread();
-        thread2.start();
     }
 
     public static void methodToValueCalc() {
         long start = System.currentTimeMillis();
-        System.out.println("Current start time in milliseconds = " + start);
+        Arrays.fill(baseArray, 50);
+        float[] fal = Arrays.copyOfRange(baseArray, 0, halfSize);
+        float[] sal = Arrays.copyOfRange(baseArray, halfSize, baseArray.length);
 
-        Arrays.fill(str, 50);
-        System.out.println(Arrays.toString(str));
+        System.arraycopy(fal, 0, baseArray, 0, fal.length);
+        System.arraycopy(sal, 0, baseArray, fal.length, sal.length);
+        MyThread thread = new MyThread("a", fal);
+        thread.start();
 
-        int[] a = Arrays.copyOfRange(str, 0, halfSize);
-        int[] b = Arrays.copyOfRange(str, halfSize, str.length);
-        System.out.println(Arrays.toString(a));
-        System.out.println(Arrays.toString(b));
+        MyThread thread2 = new MyThread("b", sal);
+        thread2.start();
 
-        for (int i = 0; i < a.length; ++i) {
-            a[i] = (byte) (a[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-        }
-        for (int i = 0; i < b.length; ++i) {
-            b[i] = (byte) (a[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
-        }
-        int fal = a.length;
-        int sal = b.length;
-        int[] result = new int[fal + sal];
-        System.arraycopy(a, 0, result, 0, fal);
-        System.arraycopy(b, 0, result, fal, sal);
-        System.out.println(Arrays.toString(a));
-        System.out.println(Arrays.toString(b));
-        System.out.println(Arrays.toString(result));
+        float[] result = new float[baseArray.length];
+        System.arraycopy(fal, 0, result, 0, fal.length);
+        System.arraycopy(sal, 0, result, fal.length, sal.length);
         long end = System.currentTimeMillis();
-        System.out.println("Current end time in milliseconds = " + end);
         long timeRunning = end - start;
         System.out.println("Current running time in milliseconds = " + timeRunning);
-
     }
 }
+
