@@ -7,12 +7,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ArrayList moyaVaginf = new ArrayList<>();
-
         ArrayList<String> list = new ArrayList<>(Arrays.asList("Cat", "Dog", "Cat", "Dog",
                 "Human", "Monkey", "Human"));
 
-        countOccurance(list, "Cat");
+        countOccurance(list, "Monkey");
         List<String> a = toList(list);
         System.out.println(a.getClass().getName());
 
@@ -33,13 +31,7 @@ public class Main {
 
 
     public static void countOccurance(List<String> arrayList, String string) {
-        int count = 0;
-        for (String array : arrayList) {
-            if (array.equals(string)) {
-                count++;
-            }
-        }
-        System.out.println(count);
+        System.out.println(Collections.frequency(arrayList,string));
     }
 
     public static List<String> toList(ArrayList<String> array) {
@@ -72,16 +64,7 @@ public class Main {
             map3.putAll(occurrence);
             asd.add(map3);
         }
-        // Не знаю как сделать именно такой пример [
-        //
-        //   {name: "bird", occurrence: 2},
-        //
-        //   {name: "fox", occurrence: 1},
-        //
-        //   {name: "cat", occurrence: 1}
-        //
-        //] в последнем пункте 4***
-        System.out.println(asd);
+        System.out.println(asd.toString().replace("=",":"));
 
     }
 }
