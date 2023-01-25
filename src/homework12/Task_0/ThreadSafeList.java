@@ -13,7 +13,6 @@ public class ThreadSafeList {
         }
     }
 
-
         public void add (final String value){
             synchronized(list) {
                 list.add(value);
