@@ -13,63 +13,57 @@ public class LessonDao {
 
     public void addLesson(Lesson lesson) throws SQLException, NumberFormatException {
         String query = "INSERT INTO Lesson (name, updatedAt, homework_id) VALUES (?, ?, ?);";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, lesson.getName());
-        statement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
-        statement.setInt(3, Integer.parseInt(lesson.getHomework().getId()));
-        statement.executeUpdate();
-        statement.close();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, lesson.getName());
+            statement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            statement.setInt(3, Integer.parseInt(lesson.getHomework().getId()));
+            statement.executeUpdate();
+        }
     }
 
     public void deleteLesson(int lessonId) throws SQLException {
         String query = "DELETE FROM Lesson WHERE id = ?;";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, lessonId);
-        statement.executeUpdate();
-        statement.close();
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, lessonId);
+            statement.executeUpdate();
+        }
     }
 
     public List<LessonItem> getAllLessons() throws SQLException {
         String query = "SELECT l.id, l.name, l.updatedAt " +
                 "FROM Lesson l;";
-        PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet resultSet = statement.executeQuery();
-        List<LessonItem> lessons = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+            List<LessonItem> lessons = new ArrayList<>();
 
-        while (resultSet.next()) {
-            String lessonId = resultSet.getString(1);
-            String lessonName = resultSet.getString(2);
-            String lessonUpdatedAt = resultSet.getString(3);
-            LessonItem lesson = new LessonItem(lessonId, lessonName, lessonUpdatedAt);
-            lessons.add(lesson);
+            while (resultSet.next()) {
+                String lessonId = resultSet.getString(1);
+                String lessonName = resultSet.getString(2);
+                String lessonUpdatedAt = resultSet.getString(3);
+                LessonItem lesson = new LessonItem(lessonId, lessonName, lessonUpdatedAt);
+                lessons.add(lesson);
+            }
+
+            return lessons;
         }
-
-        resultSet.close();
-        statement.close();
-
-        return lessons;
     }
 
     public LessonItem getLessonById(int lessonId) throws SQLException {
         String query = "SELECT l.id, l.name, l.updatedAt " +
                 "FROM Lesson l " +
                 "WHERE l.id = ?;";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setInt(1, lessonId);
-        ResultSet resultSet = statement.executeQuery();
-
-        LessonItem lesson = null;
-
-        if (resultSet.next()) {
-            String lId = resultSet.getString(1);
-            String lessonName = resultSet.getString(2);
-            String lessonUpdatedAt = resultSet.getString(3);
-            lesson = new LessonItem(lId, lessonName, lessonUpdatedAt);
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, lessonId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                LessonItem lesson = null;
+                if (resultSet.next()) {
+                    String lId = resultSet.getString(1);
+                    String lessonName = resultSet.getString(2);
+                    String lessonUpdatedAt = resultSet.getString(3);
+                    lesson = new LessonItem(lId, lessonName, lessonUpdatedAt);
+                }
+                return lesson;
+            }
         }
-
-        resultSet.close();
-        statement.close();
-
-        return lesson;
     }
 }
