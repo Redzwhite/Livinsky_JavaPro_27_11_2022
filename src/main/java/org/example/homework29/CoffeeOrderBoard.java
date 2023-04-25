@@ -1,9 +1,11 @@
-package org.example.homework15;
+package org.example.homework29;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CoffeeOrderBoard {
 
@@ -31,7 +33,7 @@ public class CoffeeOrderBoard {
                 System.err.println("This element already exist in order list");
             } else {
                 this.ordersList.add(new Order(numberOrder, clientName));
-                logger.info("Додано замовлення: {}", new Order(numberOrder, clientName));
+                logger.info("Order added: {}", new Order(numberOrder, clientName));
                 List<Integer> updatedOrders = ordersNumbersList();
                 List<Integer> copyExistOrders = new ArrayList<>(updatedOrders);
                 Collections.sort(copyExistOrders);
@@ -54,23 +56,22 @@ public class CoffeeOrderBoard {
             System.out.println("Add to list new order number: " + numberOrder + ", List size orders: " + this.ordersList.size());
         }
     }
-// В задании два метода с одним названием, то я один закоментировал но реализовал.
-//    public void deliver(){
-//        Order deliveredOrder = this.ordersList.remove(0);
-//        System.out.println("Order for " + deliveredOrder.clientName + "delivered order number is " + deliveredOrder.orderNumber);
-//    }
 
     public void deliver(int orderNumber) {
-        for (Order o : this.ordersList) {
-            if (o.orderNumber == orderNumber) {
-                Order deliveredOrder = this.ordersList.remove(this.ordersList.indexOf(o));
-                logger.info("Замовлення видалено: {}", deliveredOrder);
-                System.out.println("Order for " + deliveredOrder.clientName + "delivered order number is " + deliveredOrder.orderNumber);
-                return;
+        try {
+            for (Order o : this.ordersList) {
+                if (o.orderNumber == orderNumber) {
+                    Order deliveredOrder = this.ordersList.remove(this.ordersList.indexOf(o));
+                    logger.info("The order has been deleted: {}", deliveredOrder);
+                    System.out.println("Order for " + deliveredOrder.clientName + "delivered order number is " + deliveredOrder.orderNumber);
+                    return;
+                }
             }
+            logger.warn("Order number {} not found", orderNumber);
+            System.err.println("Such order " + orderNumber + " not exist");
+        } catch (Exception e) {
+            logger.error("Error deleting order with number {}", orderNumber, e);
         }
-        logger.warn("Замовлення з номером {} не знайдено", orderNumber);
-        System.err.println("Such order " + orderNumber + " not exist");
     }
 
     public void draw(){

@@ -1,8 +1,13 @@
 package org.example.homework15;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 public class CoffeeOrderBoard {
+
+    public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public ArrayList<Order> ordersList;
 
@@ -26,6 +31,7 @@ public class CoffeeOrderBoard {
                 System.err.println("This element already exist in order list");
             } else {
                 this.ordersList.add(new Order(numberOrder, clientName));
+                logger.info("Додано замовлення: {}", new Order(numberOrder, clientName));
                 List<Integer> updatedOrders = ordersNumbersList();
                 List<Integer> copyExistOrders = new ArrayList<>(updatedOrders);
                 Collections.sort(copyExistOrders);
@@ -58,10 +64,12 @@ public class CoffeeOrderBoard {
         for (Order o : this.ordersList) {
             if (o.orderNumber == orderNumber) {
                 Order deliveredOrder = this.ordersList.remove(this.ordersList.indexOf(o));
+                logger.info("Замовлення видалено: {}", deliveredOrder);
                 System.out.println("Order for " + deliveredOrder.clientName + "delivered order number is " + deliveredOrder.orderNumber);
                 return;
             }
         }
+        logger.warn("Замовлення з номером {} не знайдено", orderNumber);
         System.err.println("Such order " + orderNumber + " not exist");
     }
 
