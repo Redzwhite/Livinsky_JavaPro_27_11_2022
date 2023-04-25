@@ -1,7 +1,4 @@
-package org.example.homework15;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.example.homework29;
 
 public class Main {
 
